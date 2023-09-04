@@ -16,5 +16,5 @@ Marks will be based on completeness of audio assets, and whether they make sense
   - [ ] PacStudent sound effect (eating)
   - [ ] PacStudent sound effect (wall collision)
   - [ ] PacStudent sound effect (death)
-- [ ] Play (game intro) on play button pressed, then (normal ghost) after (game intro) ends.
+- [ ] Have one audio source in the scene where: play (game intro) on play button pressed, then (normal ghost) after (game intro) ends.
 
