@@ -9,9 +9,9 @@ Marks will be based on completeness of audio assets, and whether they make sense
 
 - [ ] Find Audio assets:
   - [x] Background music (game intro)
-  - [ ] Background music (normal ghosts)
-  - [ ] Background music (scared ghosts)
-  - [ ] Background music (> 1 ghost dead)
+  - [x] Background music (normal ghosts)
+  - [x] Background music (scared ghosts)
+  - [x] Background music (> 1 ghost dead)
   - [ ] PacStudent sound effect (moving)
   - [ ] PacStudent sound effect (eating)
   - [ ] PacStudent sound effect (wall collision)
