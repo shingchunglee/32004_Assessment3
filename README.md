@@ -2,7 +2,7 @@
 
 ## Milestones
 
-### Audio (incomplete)
+### Audio (Complete)
 Source all audio found, they must be different from the original game. Find royalty free, or create game sounds yourself.
 
 Marks will be based on completeness of audio assets, and whether they make sense.
@@ -16,7 +16,7 @@ Marks will be based on completeness of audio assets, and whether they make sense
   - [x] PacStudent sound effect (eating)
   - [x] PacStudent sound effect (wall collision)
   - [x] PacStudent sound effect (death)
-- [ ] Have one audio source in the scene where: play (game intro) on play button pressed, then (normal ghost) after (game intro) ends.
+- [x] Have one audio source in the scene where: play (game intro) on play button pressed, then (normal ghost) after (game intro) ends.
 
 Attributons:
 
