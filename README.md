@@ -7,21 +7,21 @@ Source all audio found, they must be different from the original game. Find roya
 
 Marks will be based on completeness of audio assets, and whether they make sense.
 
-- [ ] Find Audio assets:
+- [x] Find Audio assets:
   - [x] Background music (game intro)
   - [x] Background music (normal ghosts)
   - [x] Background music (scared ghosts)
   - [x] Background music (> 1 ghost dead)
-  - [ ] PacStudent sound effect (moving)
-  - [ ] PacStudent sound effect (eating)
-  - [ ] PacStudent sound effect (wall collision)
-  - [ ] PacStudent sound effect (death)
+  - [x] PacStudent sound effect (moving)
+  - [x] PacStudent sound effect (eating)
+  - [x] PacStudent sound effect (wall collision)
+  - [x] PacStudent sound effect (death)
 - [ ] Have one audio source in the scene where: play (game intro) on play button pressed, then (normal ghost) after (game intro) ends.
 
 Attributons:
 
 background-gameIntro:
-Composer: Abstraction
+Artist: Abstraction
 Album: Three Red Hearts
 Song: Penguin Town.wav
 Links: 
@@ -29,7 +29,7 @@ Links:
 - Homepage - http://www.abstractionmusic.com/
 
 background-normalGhosts:
-Composer: Abstraction
+Artist: Abstraction
 Album: Three Red Hearts
 Song: Pixel War 1.wav
 Links: 
@@ -37,7 +37,7 @@ Links:
 - Homepage - http://www.abstractionmusic.com/
 
 background-scaredGhosts:
-Composer: Abstraction
+Artist: Abstraction
 Album: Three Red Hearts
 Song: Out of Time.wav
 Links: 
@@ -45,9 +45,35 @@ Links:
 - Homepage - http://www.abstractionmusic.com/
 
 background-deadGhosts:
-Composer: Abstraction
+Artist: Abstraction
 Album: Three Red Hearts
 Song: Pixel War 2.wav
 Links: 
 - Bandcamp - http://abstractionmusic.bandcamp.com/
 - Homepage - http://www.abstractionmusic.com/
+
+effect-moving:
+Artist: Dagurasu Sketch
+Sound: Animal and caracters/characters/walk/walk 3 slow.wav
+Links:
+- https://dagurasusketch.itch.io/retrosounds
+
+effect-eating:
+Artist: Jade “JDWasabi” Leamcharaskul
+Sound: Bubble 1.wav
+Links:
+- https://www.jdwasabi.com/store/8-bit-16-bit-sound-effects-x25-pack
+- https://jdwasabi.itch.io/8-bit-16-bit-sound-effects-pack
+
+effect-wallCollision:
+Artist: Jade “JDWasabi” Leamcharaskul
+Sound: Hit damage 1.wav
+Links:
+- https://www.jdwasabi.com/store/8-bit-16-bit-sound-effects-x25-pack
+- https://jdwasabi.itch.io/8-bit-16-bit-sound-effects-pack
+
+effect-death:
+Artist: Dagurasu Sketch
+Sound: cinematics/cinematic 2.wav
+Links:
+- https://dagurasusketch.itch.io/retrosounds
