@@ -88,6 +88,6 @@ Create all visuals yourself
   - [x] Ghosts Dead State
   - [x] Normal Pellet
   - [x] Power Pellet
-  - [ ] Bonus Score Cherry
+  - [x] Bonus Score Cherry
   - [ ] PacStudent Life Indicator
   - [ ] Wall Segments for each wall type
