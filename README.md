@@ -89,5 +89,5 @@ Create all visuals yourself
   - [x] Normal Pellet
   - [x] Power Pellet
   - [x] Bonus Score Cherry
-  - [ ] PacStudent Life Indicator
+  - [x] PacStudent Life Indicator
   - [ ] Wall Segments for each wall type
