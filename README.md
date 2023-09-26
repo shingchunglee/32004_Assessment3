@@ -78,10 +78,10 @@ Sound: cinematics/cinematic 2.wav
 Links:
 - https://dagurasusketch.itch.io/retrosounds
 
-### Visuals (incomplete)
+### Visuals (complete)
 Create all visuals yourself
 
-- [ ] Create Visuals
+- [x] Create Visuals
   - [x] PacStudent
   - [x] Four Ghosts Normal State
   - [x] Ghosts Scared State
@@ -90,4 +90,4 @@ Create all visuals yourself
   - [x] Power Pellet
   - [x] Bonus Score Cherry
   - [x] PacStudent Life Indicator
-  - [ ] Wall Segments for each wall type
+  - [x] Wall Segments for each wall type
