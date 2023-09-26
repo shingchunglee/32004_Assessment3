@@ -86,8 +86,8 @@ Create all visuals yourself
   - [x] Four Ghosts Normal State
   - [x] Ghosts Scared State
   - [x] Ghosts Dead State
-  - [ ] Normal Pellet
-  - [ ] Power Pellet
+  - [x] Normal Pellet
+  - [x] Power Pellet
   - [ ] Bonus Score Cherry
   - [ ] PacStudent Life Indicator
   - [ ] Wall Segments for each wall type
