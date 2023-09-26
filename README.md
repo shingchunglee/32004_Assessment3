@@ -82,7 +82,7 @@ Links:
 Create all visuals yourself
 
 - [ ] Create Visuals
-  - [ ] PacStudent
+  - [x] PacStudent
   - [ ] Four Ghosts Normal State
   - [ ] Ghosts Scared State
   - [ ] Ghosts Dead State
