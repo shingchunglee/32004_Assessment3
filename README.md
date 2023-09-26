@@ -77,3 +77,17 @@ Artist: Dagurasu Sketch
 Sound: cinematics/cinematic 2.wav
 Links:
 - https://dagurasusketch.itch.io/retrosounds
+
+### Visuals (complete)
+Create all visuals yourself
+
+- [x] Create Visuals
+  - [x] PacStudent
+  - [x] Four Ghosts Normal State
+  - [x] Ghosts Scared State
+  - [x] Ghosts Dead State
+  - [x] Normal Pellet
+  - [x] Power Pellet
+  - [x] Bonus Score Cherry
+  - [x] PacStudent Life Indicator
+  - [x] Wall Segments for each wall type
