@@ -83,9 +83,9 @@ Create all visuals yourself
 
 - [ ] Create Visuals
   - [x] PacStudent
-  - [ ] Four Ghosts Normal State
-  - [ ] Ghosts Scared State
-  - [ ] Ghosts Dead State
+  - [x] Four Ghosts Normal State
+  - [x] Ghosts Scared State
+  - [x] Ghosts Dead State
   - [ ] Normal Pellet
   - [ ] Power Pellet
   - [ ] Bonus Score Cherry
