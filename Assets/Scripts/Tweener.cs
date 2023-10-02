@@ -11,7 +11,6 @@ public class Tweener : MonoBehaviour {
     }
 
     void Update() {
-        //if (activeTween != null)
         Tween activeTween;
         for (int i = activeTweens.Count-1; i >=0; i--) //Tween activeTween in activeTweens.Reverse<Tween>())
         {
@@ -25,6 +24,7 @@ public class Tweener : MonoBehaviour {
             } else {
                 activeTween.Target.position = activeTween.EndPos;
                 //activeTween = null;
+                activeTween.Callback();
                 activeTweens.RemoveAt(i);
             }
         }
@@ -34,7 +34,9 @@ public class Tweener : MonoBehaviour {
     {
         if (!TweenExists(targetObject))
         {
-            activeTweens.Add(new Tween(targetObject, startPos, endPos, Time.time, duration));
+            activeTweens.Add(new Tween(targetObject, startPos, endPos, Time.time, duration, () => {
+                Debug.Log("Tween completed");
+            }));
             return true;
         }
         return false;

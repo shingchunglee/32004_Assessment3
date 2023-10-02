@@ -1,38 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class PacStudentController : MonoBehaviour
 {
     // Start is called before the first frame update
-    private int direction = 0;
-    private int state = 0;
     private PacStudentAnimator animationComponent;
-    private GameController gameController;
+    // private GameController gameController;
     private Movable movableComponent;
+    private AudioPlayable audioPlayableComponent;
     [SerializeField] private bool isDead;
+    private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
+    private int currentPath = 0;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         animationComponent = gameObject.GetComponent<PacStudentAnimator>();
-        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        // gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         movableComponent = gameObject.GetComponent<Movable>();
-	}
+        audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
+
+        Walk();
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (!isDead) {
-            bool moved = gameController.gameObjectMove(gameObject);
-            if (moved)
+            if (movableComponent.finishedTween)
             {
-                updateAnimation(direction);
-                direction = (direction+1) % 4;
-                NextMove(direction);
+                currentPath ++;
+                currentPath = currentPath % demoMoves.Length;
+                movableComponent.finishedTween = false;
+                Walk(); 
             }
         }
     }
 
-    private void updateAnimation(int direction)
+    private void UpdateAnimation(int direction)
     {
         if (direction == 0)
         {
@@ -52,7 +58,7 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
-    private void NextMove(int direction)
+    private void UpdateMove(int direction)
     {   
         if (direction == 0)
         {
@@ -72,4 +78,12 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
+    private void Walk()
+    {
+        int direction = demoMoves[currentPath];
+        UpdateMove(direction);
+        UpdateAnimation(direction);
+        movableComponent.AddTween();
+        audioPlayableComponent.PlayWalkSound();
+    }
 }
