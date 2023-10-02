@@ -93,12 +93,12 @@ Create all visuals yourself
   - [x] Wall Segments for each wall type
 
 ### Animations (incomplete)
-- [ ] PacStudnet
-  - [ ] Walking States
-  - [ ] Dead State
-- [ ] Power Pellet
-- [ ] Ghost
-  - [ ] Walking State
-  - [ ] Scared State
-  - [ ] Recovering State
-  - [ ] Dead State
+- [x] PacStudnet
+  - [x] Walking States
+  - [x] Dead State
+- [x] Power Pellet
+- [x] Ghost
+  - [x] Walking State
+  - [x] Scared State
+  - [x] Recovering State
+  - [x] Dead State
