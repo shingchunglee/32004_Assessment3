@@ -2,19 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GhostController : MonoBehaviour
-{
-    private Coroutine demoMoveCoroutine;
+{ 
     private int direction = 0;
     private int state = 0;
+	private GhostAnimatior animationComponent;
+    private GameController gameController;
+    private Movable moveableComponent;
+    private float demoStatusDuration = 3.0f;
+    private float lastTime;
 	// Use this for initialization
 	void Start () {
+        animationComponent = gameObject.GetComponent<GhostAnimatior>();
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        moveableComponent = gameObject.GetComponent<Movable>();
 	}
 
     // Update is called once per frame
     void Update()
     {
+        lastTime += Time.deltaTime;
         GameObject gameController = GameObject.FindWithTag("GameController");
         GameController gameControllerComponent = gameController.GetComponent<GameController>();
         bool moved = gameControllerComponent.gameObjectMove(gameObject);
@@ -22,10 +31,10 @@ public class GhostController : MonoBehaviour
         {
             updateAnimation(direction);
             direction = (direction+1) % 4;
-            if (direction == 0) 
-            {
+            if (lastTime > demoStatusDuration) {
                 updateState(state);
                 state = (state + 1) % 4;
+                lastTime = 0f;
             }
             NextMove(direction);
         }
@@ -33,65 +42,61 @@ public class GhostController : MonoBehaviour
 
     private void updateState(int state)
     {
-        GhostAnimation ghostAnimationController = gameObject.GetComponent<GhostAnimation>();
         if (state == 0)
         {
-            ghostAnimationController.Normal();
+            animationComponent.Normal();
         }
         if (state == 1)
         {
-            ghostAnimationController.Scared();
+            animationComponent.Scared();
         }
         if (state == 2)
         {
-            ghostAnimationController.Recovering();
+            animationComponent.Recovering();
         }
         if (state == 3)
         {
-            ghostAnimationController.Dead();
+            animationComponent.Dead();
         }
     }
 
     private void updateAnimation(int direction)
     {
-        GhostAnimation ghostAnimationController = gameObject.GetComponent<GhostAnimation>();
         if (direction == 0)
         {
-            ghostAnimationController.Up();
+            animationComponent.Up();
         }
         if (direction == 1)
         {
-            ghostAnimationController.Left();
+            animationComponent.Left();
         }
         if (direction == 2)
         {
-            ghostAnimationController.Down();
+            animationComponent.Down();
         }
         if (direction == 3)
         {
-            ghostAnimationController.Right();
+            animationComponent.Right();
         }
     }
 
     private void NextMove(int direction)
-    {
-        Move ghostMoveController = gameObject.GetComponent<Move>();
-        
+    {    
         if (direction == 0)
         {
-            ghostMoveController.Up();
+            moveableComponent.Up();
         }
         if (direction == 1)
         {
-            ghostMoveController.Left();
+            moveableComponent.Left();
         }
         if (direction == 2)
         {
-            ghostMoveController.Down();
+            moveableComponent.Down();
         }
         if (direction == 3)
         {
-            ghostMoveController.Right();
+            moveableComponent.Right();
         }
     }
 }

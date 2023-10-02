@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public class Movable : MonoBehaviour
 {
     public float xVelocity { get; private set; } = 0f;
     public float yVelocity { get; private set; } = 0f;
@@ -24,21 +24,21 @@ public class Move : MonoBehaviour
     public void Down()
     {
         xVelocity = 0;
-        yVelocity = -1/8f;
+        yVelocity = -1f;
     }
     public void Left()
     {
-        xVelocity = -1/8f;
+        xVelocity = -1f;
         yVelocity = 0;
     }
     public void Up()
     {
         xVelocity = 0;
-        yVelocity = 1/8f;
+        yVelocity = 1f;
     }
     public void Right()
     {
-        xVelocity = 1/8f;
+        xVelocity = 1f;
         yVelocity = 0;
     }
 }

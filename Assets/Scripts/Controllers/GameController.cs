@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     }
 
     public bool gameObjectMove(GameObject item) {
-        Move moveComponent = item.GetComponent<Move>();
+        Movable moveComponent = item.GetComponent<Movable>();
 
         return tweener.AddTween(
             item.transform, 

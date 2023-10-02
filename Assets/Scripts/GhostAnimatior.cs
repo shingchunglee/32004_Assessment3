@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GhostAnimation : MonoBehaviour
+public class GhostAnimatior : MonoBehaviour
 {
     public Animator animatorController;
     [SerializeField] private int ghostColor;
