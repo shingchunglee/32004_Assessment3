@@ -5,40 +5,73 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GhostController : MonoBehaviour
-{ 
-    private int direction = 0;
+{
     private int state = 0;
 	private GhostAnimatior animationComponent;
     private GameController gameController;
-    private Movable moveableComponent;
+    private Movable movableComponent;
     private float demoStatusDuration = 3.0f;
+    private int[] demoMoves = {3,2,1,0};
+    private int currentPath = 0;
     private float lastTime;
 	// Use this for initialization
 	void Start () {
         animationComponent = gameObject.GetComponent<GhostAnimatior>();
-        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-        moveableComponent = gameObject.GetComponent<Movable>();
+        movableComponent = gameObject.GetComponent<Movable>();
+
+        Application.targetFrameRate = 144;
+        int direction = demoMoves[currentPath];
+        UpdateMove(direction);
+        UpdateAnimation(direction);
+        movableComponent.AddTween();
 	}
 
     // Update is called once per frame
     void Update()
     {
         lastTime += Time.deltaTime;
-        GameObject gameController = GameObject.FindWithTag("GameController");
-        GameController gameControllerComponent = gameController.GetComponent<GameController>();
-        bool moved = gameControllerComponent.gameObjectMove(gameObject);
-        if (moved)
+        if (movableComponent.finishedTween)
         {
-            updateAnimation(direction);
-            direction = (direction+1) % 4;
+            currentPath ++;
+            currentPath = currentPath % demoMoves.Length;
+            movableComponent.finishedTween = false;
+            int direction = demoMoves[currentPath];
+            UpdateMove(direction);
+            UpdateAnimation(direction);
             if (lastTime > demoStatusDuration) {
                 updateState(state);
                 state = (state + 1) % 4;
                 lastTime = 0f;
             }
-            NextMove(direction);
+            movableComponent.AddTween();
         }
     }
+	// Use this for initialization
+	// void Start () {
+    //     animationComponent = gameObject.GetComponent<GhostAnimatior>();
+    //     gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+    //     movableComponent = gameObject.GetComponent<Movable>();
+	// }
+
+    // // Update is called once per frame
+    // void Update()
+    // {
+    //     lastTime += Time.deltaTime;
+    //     GameObject gameController = GameObject.FindWithTag("GameController");
+    //     GameController gameControllerComponent = gameController.GetComponent<GameController>();
+    //     bool moved = gameControllerComponent.gameObjectMove(gameObject);
+    //     if (moved)
+    //     {
+    //         updateAnimation(direction);
+    //         direction = (direction+1) % 4;
+    //         if (lastTime > demoStatusDuration) {
+    //             updateState(state);
+    //             state = (state + 1) % 4;
+    //             lastTime = 0f;
+    //         }
+    //         NextMove(direction);
+    //     }
+    // }
 
     private void updateState(int state)
     {
@@ -60,7 +93,7 @@ public class GhostController : MonoBehaviour
         }
     }
 
-    private void updateAnimation(int direction)
+    private void UpdateAnimation(int direction)
     {
         if (direction == 0)
         {
@@ -80,23 +113,23 @@ public class GhostController : MonoBehaviour
         }
     }
 
-    private void NextMove(int direction)
+    private void UpdateMove(int direction)
     {    
         if (direction == 0)
         {
-            moveableComponent.Up();
+            movableComponent.Up();
         }
         if (direction == 1)
         {
-            moveableComponent.Left();
+            movableComponent.Left();
         }
         if (direction == 2)
         {
-            moveableComponent.Down();
+            movableComponent.Down();
         }
         if (direction == 3)
         {
-            moveableComponent.Right();
+            movableComponent.Right();
         }
     }
 }

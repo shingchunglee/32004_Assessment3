@@ -1,6 +1,11 @@
+#nullable enable
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 
 public class Tween {
     public Transform Target { get; private set; }
@@ -8,7 +13,40 @@ public class Tween {
     public Vector3 EndPos { get; private set; }
     public float StartTime { get; private set; }
     public float Duration { get; private set; }
+    public EasingTypes Easing { get; private set; }
+    public Action Callback { get; private set; }
+    public Tween? Queue { get; set; }
 
+
+    public Tween(Transform target, Vector3 origin, Vector3 destination, float startTime, float duration, EasingTypes easing, Action callback) {
+        Target = target;
+        StartPos = origin;
+        EndPos = destination;
+        StartTime = startTime;
+        Duration = duration;
+        Easing = easing;
+        Callback = callback;
+    }
+
+    public Tween(Transform target, Vector3 origin, Vector3 destination, float startTime, float duration, EasingTypes easing) {
+        Target = target;
+        StartPos = origin;
+        EndPos = destination;
+        StartTime = startTime;
+        Duration = duration;
+        Easing = easing;
+        Callback  = () => {};
+    }
+    
+    public Tween(Transform target, Vector3 origin, Vector3 destination, float startTime, float duration, Action callback) {
+        Target = target;
+        StartPos = origin;
+        EndPos = destination;
+        StartTime = startTime;
+        Duration = duration;
+        Easing = EasingTypes.linear;
+        Callback = callback;
+    }
 
     public Tween(Transform target, Vector3 origin, Vector3 destination, float startTime, float duration) {
         Target = target;
@@ -16,5 +54,7 @@ public class Tween {
         EndPos = destination;
         StartTime = startTime;
         Duration = duration;
+        Easing = EasingTypes.linear;
+        Callback  = () => {};
     }
 }
