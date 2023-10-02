@@ -91,3 +91,14 @@ Create all visuals yourself
   - [x] Bonus Score Cherry
   - [x] PacStudent Life Indicator
   - [x] Wall Segments for each wall type
+
+### Animations (incomplete)
+- [x] PacStudnet
+  - [x] Walking States
+  - [x] Dead State
+- [x] Power Pellet
+- [x] Ghost
+  - [x] Walking State
+  - [x] Scared State
+  - [x] Recovering State
+  - [x] Dead State
