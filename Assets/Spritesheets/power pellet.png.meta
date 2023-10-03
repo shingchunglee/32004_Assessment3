@@ -110,10 +110,10 @@ TextureImporter:
       name: power pellet_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 7
-        width: 3
-        height: 3
+        x: 0
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,10 +131,10 @@ TextureImporter:
       name: power pellet_1
       rect:
         serializedVersion: 2
-        x: 23
-        y: 7
-        width: 3
-        height: 3
+        x: 16
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
