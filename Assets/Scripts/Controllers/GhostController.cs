@@ -46,32 +46,6 @@ public class GhostController : MonoBehaviour
             movableComponent.AddTween();
         }
     }
-	// Use this for initialization
-	// void Start () {
-    //     animationComponent = gameObject.GetComponent<GhostAnimatior>();
-    //     gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-    //     movableComponent = gameObject.GetComponent<Movable>();
-	// }
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //     lastTime += Time.deltaTime;
-    //     GameObject gameController = GameObject.FindWithTag("GameController");
-    //     GameController gameControllerComponent = gameController.GetComponent<GameController>();
-    //     bool moved = gameControllerComponent.gameObjectMove(gameObject);
-    //     if (moved)
-    //     {
-    //         updateAnimation(direction);
-    //         direction = (direction+1) % 4;
-    //         if (lastTime > demoStatusDuration) {
-    //             updateState(state);
-    //             state = (state + 1) % 4;
-    //             lastTime = 0f;
-    //         }
-    //         NextMove(direction);
-    //     }
-    // }
 
     private void updateState(int state)
     {
