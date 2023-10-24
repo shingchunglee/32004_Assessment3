@@ -20,7 +20,7 @@ public class SceneController : MonoBehaviour
 
     IEnumerator LoadSceneAsync(string level)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/" + level);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(level);
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)

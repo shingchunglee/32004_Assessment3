@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - ManualMap
+  - ExitButton
+  - Lives
+  - GhostTimer
   layers:
   - Default
   - TransparentFX
