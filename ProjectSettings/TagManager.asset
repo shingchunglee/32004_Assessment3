@@ -7,6 +7,7 @@ TagManager:
   - ManualMap
   - ExitButton
   - Lives
+  - GhostTimer
   layers:
   - Default
   - TransparentFX
