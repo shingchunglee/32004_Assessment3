@@ -34,7 +34,7 @@ public class GhostController : MonoBehaviour
         {
             currentPath ++;
             currentPath = currentPath % demoMoves.Length;
-            movableComponent.finishedTween = false;
+            movableComponent.resetTween();
             int direction = demoMoves[currentPath];
             UpdateMove(direction);
             UpdateAnimation(direction);
