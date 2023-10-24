@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class PacStudentController : MonoBehaviour
 {
     // Start is called before the first frame update
     private PacStudentAnimator animationComponent;
-    // private GameController gameController;
     private Movable movableComponent;
     private AudioPlayable audioPlayableComponent;
     [SerializeField] private bool isDead;
@@ -17,7 +13,6 @@ public class PacStudentController : MonoBehaviour
 	void Start ()
     {
         animationComponent = gameObject.GetComponent<PacStudentAnimator>();
-        // gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         movableComponent = gameObject.GetComponent<Movable>();
         audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
 
@@ -32,7 +27,7 @@ public class PacStudentController : MonoBehaviour
             {
                 currentPath ++;
                 currentPath = currentPath % demoMoves.Length;
-                movableComponent.finishedTween = false;
+                movableComponent.resetTween();
                 Walk(); 
             }
         }

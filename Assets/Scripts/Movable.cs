@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Movable : MonoBehaviour
@@ -11,12 +6,11 @@ public class Movable : MonoBehaviour
     public float yVelocity { get; private set; } = 0f;
 
     private Tween activeTween;
-    public bool finishedTween = false;
+    public bool finishedTween { get; private set; } = false;
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {  
     }
 
     // Update is called once per frame
@@ -28,7 +22,7 @@ public class Movable : MonoBehaviour
             EndTween();
             return;
         }
-        if (Vector3.Distance(activeTween.Target.position, activeTween.EndPos) <= 0.1f)
+        if (Vector3.Distance(activeTween.Target.position, activeTween.EndPos) <= 0.01f)
         {
             EndTween();
             return;
@@ -97,5 +91,10 @@ public class Movable : MonoBehaviour
     {
         xVelocity = 1f;
         yVelocity = 0;
+    }
+
+    internal void resetTween()
+    {
+        finishedTween = false;
     }
 }
