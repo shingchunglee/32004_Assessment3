@@ -8,6 +8,8 @@ public class PacStudentController : MonoBehaviour
     private PacStudentAnimator animationComponent;
     private Movable movableComponent;
     private AudioPlayable audioPlayableComponent;
+    [SerializeField] private ParticleSystem walkParticles;
+    private ParticleSystem.EmissionModule walkEmission;
     private Animator animation;
     [SerializeField] private bool isDead;
     private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
@@ -25,6 +27,9 @@ public class PacStudentController : MonoBehaviour
         movableComponent = gameObject.GetComponent<Movable>();
         audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
         gameObject.transform.position = map.GetSceneCoordinates(coordinates);
+
+        walkEmission = walkParticles.emission;
+        walkEmission.enabled = false;
 
         // Walk();
     }
@@ -121,6 +126,7 @@ public class PacStudentController : MonoBehaviour
                     UpdateMove(valueOfLastInput);
                     UpdateAnimation(valueOfLastInput);
                     coordinates = newCoordinates;
+                    walkEmission.enabled = true;
                     movableComponent.AddTween();
                     audioPlayableComponent.PlayWalkSound();
                 } 
@@ -134,11 +140,13 @@ public class PacStudentController : MonoBehaviour
                         UpdateMove(currentInput);
                         UpdateAnimation(currentInput);
                         coordinates = newCoordinates;
+                        walkEmission.enabled = true;
                         movableComponent.AddTween();
                         audioPlayableComponent.PlayWalkSound();
                     } else
                     {
                         animation.speed = 0;
+                        walkEmission.enabled = false;
                     }
                 }
             } catch(IndexOutOfRangeException e) {
@@ -150,11 +158,13 @@ public class PacStudentController : MonoBehaviour
                     UpdateMove(currentInput);
                     UpdateAnimation(currentInput);
                     coordinates = newCoordinates;
+                    walkEmission.enabled = true;
                     movableComponent.AddTween();
                     audioPlayableComponent.PlayWalkSound();
                 } else
                 {
                     animation.speed = 0;
+                    walkEmission.enabled = false;
                 }
             }
             
