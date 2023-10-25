@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Movable : MonoBehaviour
@@ -7,6 +8,7 @@ public class Movable : MonoBehaviour
 
     private Tween activeTween;
     public bool finishedTween { get; private set; } = false;
+    public bool isTweening => activeTween != null;
 
     // Start is called before the first frame update
     void Start()
@@ -34,18 +36,7 @@ public class Movable : MonoBehaviour
 
     public void AddTween()
     {
-       if (activeTween != null)
-       {
-            activeTween.Queue = new Tween(
-                gameObject.transform, 
-                activeTween.EndPos,
-                new Vector3(activeTween.EndPos.x + xVelocity, activeTween.EndPos.y + yVelocity, 0.0f),
-                activeTween.StartTime + activeTween.Duration,
-                1f,
-                () => { finishedTween = true; }
-            );
-       }
-       else
+       if (activeTween == null)
        {
             activeTween = new Tween(
                 gameObject.transform, 
@@ -62,14 +53,8 @@ public class Movable : MonoBehaviour
     {
         activeTween.Target.position = activeTween.EndPos;
         activeTween.Callback();
-        if (activeTween.Queue != null)
-        {
-            activeTween = activeTween.Queue;
-        }
-        else 
-        {
-            activeTween = null;
-        }
+        
+        activeTween = null;
     }
 
     public void Down()
@@ -97,4 +82,5 @@ public class Movable : MonoBehaviour
     {
         finishedTween = false;
     }
+
 }

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     private const int initLives = 3;
     public int lives = 3;
     [SerializeField] private GameObject lifePrefab;
+    private Map map = Map.Instance;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +48,19 @@ public class GameController : MonoBehaviour
         if (ghostTimerObject != null)
         {
             ghostTimerObject.SetActive(false);
+        }
+    }
+
+    public void Init(UnityEngine.Events.UnityAction call)
+    {
+        GameObject exitButton = GameObject.FindGameObjectWithTag("ExitButton");
+
+        if (exitButton != null)
+        {
+            exitButton.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                call();
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour
 {
@@ -10,15 +11,34 @@ public class SceneController : MonoBehaviour
 
     public void LoadLevel1()
     {
-        StartCoroutine(LoadSceneAsync("Level1"));
+        StartCoroutine(LoadSceneAsync(
+            "Level1", 
+            () => {
+                GameObject gameControllerObject = GameObject.FindGameObjectWithTag("GameController");
+
+                if (gameControllerObject != null)
+                {
+                    GameController gameController = gameControllerObject.GetComponent<GameController>();
+                    if (gameController != null)
+                    {
+                        gameController.Init(() =>
+                        {
+                            SceneManager.LoadScene("StartScene");
+                        });
+                    }
+                }
+
+                
+            }
+        ));
     }
 
     public void LoadLevel2()
     {
-        StartCoroutine(LoadSceneAsync("Level2"));
+        StartCoroutine(LoadSceneAsync("Level2", () => {}));
     }
 
-    IEnumerator LoadSceneAsync(string level)
+    IEnumerator LoadSceneAsync(string level, System.Action callback)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(level);
 
@@ -27,5 +47,6 @@ public class SceneController : MonoBehaviour
         {
             yield return null;
         }
+        callback();
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PacStudentController : MonoBehaviour
 {
@@ -6,79 +8,174 @@ public class PacStudentController : MonoBehaviour
     private PacStudentAnimator animationComponent;
     private Movable movableComponent;
     private AudioPlayable audioPlayableComponent;
+    [SerializeField] private ParticleSystem walkParticles;
+    private ParticleSystem.EmissionModule walkEmission;
+    private Animator animation;
     [SerializeField] private bool isDead;
     private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
     private int currentPath = 0;
+    private Direction? lastInput = null;
+    private Direction currentInput;
+    private Vector2 coordinates = new Vector2(15, 15);
+    private Map map = Map.Instance;
+
 	// Use this for initialization
 	void Start ()
     {
+        animation = gameObject.GetComponent<Animator>();
         animationComponent = gameObject.GetComponent<PacStudentAnimator>();
         movableComponent = gameObject.GetComponent<Movable>();
         audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
+        gameObject.transform.position = map.GetSceneCoordinates(coordinates);
 
-        Walk();
+        walkEmission = walkParticles.emission;
+        walkEmission.enabled = false;
+
+        // Walk();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!isDead) {
-            if (movableComponent.finishedTween)
+            if (Input.GetKeyDown(KeyCode.W) && lastInput != Direction.Up)
             {
-                currentPath ++;
-                currentPath = currentPath % demoMoves.Length;
-                movableComponent.resetTween();
-                Walk(); 
+                lastInput = Direction.Up;
             }
+            if (Input.GetKeyDown(KeyCode.A) && lastInput != Direction.Left)
+            {
+                lastInput = Direction.Left;
+            }
+            if (Input.GetKeyDown(KeyCode.S) && lastInput != Direction.Down)
+            {
+                lastInput = Direction.Down;
+            }
+            if (Input.GetKeyDown(KeyCode.D) && lastInput != Direction.Right)
+            {
+                lastInput = Direction.Right;
+            }
+            // if (movableComponent.finishedTween)
+            // {
+            //     currentPath ++;
+            //     currentPath = currentPath % demoMoves.Length;
+            //     movableComponent.resetTween();
+
+                // int direction = demoMoves[currentPath];
+                Walk(); 
+            // }
         }
     }
 
-    private void UpdateAnimation(int direction)
+    private void UpdateAnimation(Direction direction)
     {
-        if (direction == 0)
+        switch (direction)
         {
-            animationComponent.Up();
-        }
-        if (direction == 1)
-        {
-            animationComponent.Left();
-        }
-        if (direction == 2)
-        {
-            animationComponent.Down();
-        }
-        if (direction == 3)
-        {
-            animationComponent.Right();
+            case Direction.Up:
+                animationComponent.Up();
+                return;
+            case Direction.Left:
+                animationComponent.Left();
+                return;
+            case Direction.Down:
+                animationComponent.Down();
+                return;
+            case Direction.Right:
+                animationComponent.Right();
+                return;
+            default:
+                return;
         }
     }
 
-    private void UpdateMove(int direction)
-    {   
-        if (direction == 0)
+    private void UpdateMove(Direction direction)
+    {
+        switch (direction)
         {
-            movableComponent.Up();
-        }
-        if (direction == 1)
-        {
-            movableComponent.Left();
-        }
-        if (direction == 2)
-        {
-            movableComponent.Down();
-        }
-        if (direction == 3)
-        {
-            movableComponent.Right();
+            case Direction.Up:
+                movableComponent.Up();
+                return;
+            case Direction.Left:
+                movableComponent.Left();
+                return;
+            case Direction.Down:
+                movableComponent.Down();
+                return;
+            case Direction.Right:
+                movableComponent.Right();
+                return;
+            default:
+                return;
         }
     }
 
     private void Walk()
     {
-        int direction = demoMoves[currentPath];
-        UpdateMove(direction);
-        UpdateAnimation(direction);
-        movableComponent.AddTween();
-        audioPlayableComponent.PlayWalkSound();
+        if ( movableComponent.isTweening ) return;
+
+        if ( lastInput is Direction valueOfLastInput )
+        {
+            try {
+                Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, valueOfLastInput);
+                Debug.Log(newCoordinates);
+                int tile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
+                Debug.Log(tile);
+                if (!map.isWall(tile))
+                {
+                    animation.speed = 1;
+                    currentInput = valueOfLastInput;
+                    UpdateMove(valueOfLastInput);
+                    UpdateAnimation(valueOfLastInput);
+                    coordinates = newCoordinates;
+                    walkEmission.enabled = true;
+                    movableComponent.AddTween();
+                    audioPlayableComponent.PlayWalkSound();
+                } 
+                else 
+                {
+                    newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
+                    int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
+                    if (!map.isWall(currentInputTile))
+                    {
+                        animation.speed = 1;
+                        UpdateMove(currentInput);
+                        UpdateAnimation(currentInput);
+                        coordinates = newCoordinates;
+                        walkEmission.enabled = true;
+                        movableComponent.AddTween();
+                        audioPlayableComponent.PlayWalkSound();
+                    } else
+                    {
+                        animation.speed = 0;
+                        walkEmission.enabled = false;
+                    }
+                }
+            } catch(IndexOutOfRangeException e) {
+                Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
+                int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
+                if (!map.isWall(currentInputTile))
+                {
+                    animation.speed = 1;
+                    UpdateMove(currentInput);
+                    UpdateAnimation(currentInput);
+                    coordinates = newCoordinates;
+                    walkEmission.enabled = true;
+                    movableComponent.AddTween();
+                    audioPlayableComponent.PlayWalkSound();
+                } else
+                {
+                    animation.speed = 0;
+                    walkEmission.enabled = false;
+                }
+            }
+            
+            
+            
+            // currentInput = valueOfLastInput;
+        }
+        // if ( Map.walkable(coordinates) )
+        // UpdateMove(direction);
+        // UpdateAnimation(direction);
+        // movableComponent.AddTween();
+        // audioPlayableComponent.PlayWalkSound();
     }
 }
