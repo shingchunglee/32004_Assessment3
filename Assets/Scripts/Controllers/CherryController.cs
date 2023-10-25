@@ -94,8 +94,6 @@ public class CherryController : MonoBehaviour
     {
         if (other.CompareTag("PacStudent"))
         {
-            // Handle collision with PacStudent
-            // Example: Increase score, play sound, etc.
         }
     }
 }
