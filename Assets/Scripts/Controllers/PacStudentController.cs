@@ -10,13 +10,15 @@ public class PacStudentController : MonoBehaviour
     private AudioPlayable audioPlayableComponent;
     [SerializeField] private ParticleSystem walkParticles;
     private ParticleSystem.EmissionModule walkEmission;
+    public GameObject particleEffectPrefab;
+    private BoxCollider2D boxCollider;
     private Animator animation;
     [SerializeField] private bool isDead;
     private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
     private int currentPath = 0;
     private Direction? lastInput = null;
     private Direction currentInput;
-    private Vector2 coordinates = new Vector2(15, 15);
+    private Vector2 coordinates = new Vector2(27, 15);
     private Map map = Map.Instance;
 
 	// Use this for initialization
@@ -26,6 +28,7 @@ public class PacStudentController : MonoBehaviour
         animationComponent = gameObject.GetComponent<PacStudentAnimator>();
         movableComponent = gameObject.GetComponent<Movable>();
         audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
+        boxCollider = gameObject.GetComponent<BoxCollider2D>();
         gameObject.transform.position = map.GetSceneCoordinates(coordinates);
 
         walkEmission = walkParticles.emission;
@@ -61,8 +64,23 @@ public class PacStudentController : MonoBehaviour
             //     movableComponent.resetTween();
 
                 // int direction = demoMoves[currentPath];
-                Walk(); 
+                WalkUpdate(); 
             // }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Wall"))
+        {
+            Vector2 collisionPoint = transform.position;
+            Instantiate(particleEffectPrefab, collisionPoint, Quaternion.identity);
+
+            audioPlayableComponent.PlayWallCollisionSound();
+        }
+        if (other.CompareTag("Pellet"))
+        {
+            // Debug.Log("Hit pellet");
         }
     }
 
@@ -108,65 +126,46 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
-    private void Walk()
+    private void WalkUpdate()
     {
         if ( movableComponent.isTweening ) return;
 
         if ( lastInput is Direction valueOfLastInput )
         {
-            try {
+            // try
+            // {
                 Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, valueOfLastInput);
-                Debug.Log(newCoordinates);
                 int tile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
-                Debug.Log(tile);
                 if (!map.isWall(tile))
                 {
-                    animation.speed = 1;
-                    currentInput = valueOfLastInput;
-                    UpdateMove(valueOfLastInput);
-                    UpdateAnimation(valueOfLastInput);
-                    coordinates = newCoordinates;
-                    walkEmission.enabled = true;
-                    movableComponent.AddTween();
-                    audioPlayableComponent.PlayWalkSound();
-                } 
+                    Walk(valueOfLastInput, newCoordinates);
+                }
                 else 
                 {
                     newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
                     int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
                     if (!map.isWall(currentInputTile))
                     {
-                        animation.speed = 1;
-                        UpdateMove(currentInput);
-                        UpdateAnimation(currentInput);
-                        coordinates = newCoordinates;
-                        walkEmission.enabled = true;
-                        movableComponent.AddTween();
-                        audioPlayableComponent.PlayWalkSound();
+                        Walk(currentInput, newCoordinates);
                     } else
                     {
                         animation.speed = 0;
                         walkEmission.enabled = false;
                     }
                 }
-            } catch(IndexOutOfRangeException e) {
-                Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
-                int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
-                if (!map.isWall(currentInputTile))
-                {
-                    animation.speed = 1;
-                    UpdateMove(currentInput);
-                    UpdateAnimation(currentInput);
-                    coordinates = newCoordinates;
-                    walkEmission.enabled = true;
-                    movableComponent.AddTween();
-                    audioPlayableComponent.PlayWalkSound();
-                } else
-                {
-                    animation.speed = 0;
-                    walkEmission.enabled = false;
-                }
-            }
+            // } catch (IndexOutOfRangeException)
+            // {
+            //     Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
+            //     int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
+            //     if (!map.isWall(currentInputTile))
+            //     {
+            //         Walk(currentInput, newCoordinates);
+            //     } else
+            //     {
+            //         animation.speed = 0;
+            //         walkEmission.enabled = false;
+            //     }
+            // }
             
             
             
@@ -177,5 +176,52 @@ public class PacStudentController : MonoBehaviour
         // UpdateAnimation(direction);
         // movableComponent.AddTween();
         // audioPlayableComponent.PlayWalkSound();
+    }
+
+    private void Walk(Direction valueOfLastInput, Vector2 newCoordinates)
+    {
+        animation.speed = 1;
+        currentInput = valueOfLastInput;
+        UpdateBoxCollider(valueOfLastInput);
+        UpdateMove(valueOfLastInput);
+        UpdateAnimation(valueOfLastInput);
+        if (map.isEdge(coordinates) && map.GetNeighbourCoordinates(coordinates, currentInput) == new Vector2(-1,-1)) 
+        {
+            coordinates = map.getOpposite(coordinates);
+            gameObject.transform.position = map.GetSceneCoordinates(coordinates);
+            newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
+        }
+
+        walkEmission.enabled = true;
+        movableComponent.AddTween(() => {coordinates = newCoordinates;});
+        audioPlayableComponent.PlayWalkSound();
+    }
+
+    private void UpdateBoxCollider(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                boxCollider.offset = new Vector2(0f, 0.1f); 
+                boxCollider.size = new Vector2(0.8f, 0.9f);
+                return;
+            case Direction.Left:
+                boxCollider.offset = new Vector2(-0.1f, 0f); 
+                boxCollider.size = new Vector2(0.9f, 0.8f);
+                movableComponent.Left();
+                return;
+            case Direction.Down:
+                boxCollider.offset = new Vector2(0f, -0.1f); 
+                boxCollider.size = new Vector2(0.8f, 0.9f);
+                movableComponent.Down();
+                return;
+            case Direction.Right:
+                boxCollider.offset = new Vector2(0.1f, 0f); 
+                boxCollider.size = new Vector2(0.9f, 0.8f);
+                movableComponent.Right();
+                return;
+            default:
+                return;
+        }
     }
 }

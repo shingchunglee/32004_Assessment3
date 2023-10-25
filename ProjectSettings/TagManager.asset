@@ -8,6 +8,9 @@ TagManager:
   - ExitButton
   - Lives
   - GhostTimer
+  - Wall
+  - Pellet
+  - Power Pill
   layers:
   - Default
   - TransparentFX

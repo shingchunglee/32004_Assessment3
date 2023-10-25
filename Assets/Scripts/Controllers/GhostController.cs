@@ -23,7 +23,7 @@ public class GhostController : MonoBehaviour
         int direction = demoMoves[currentPath];
         UpdateMove(direction);
         UpdateAnimation(direction);
-        movableComponent.AddTween();
+        movableComponent.AddTween(() => {});
 	}
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class GhostController : MonoBehaviour
                 state = (state + 1) % 4;
                 lastTime = 0f;
             }
-            movableComponent.AddTween();
+            movableComponent.AddTween(() => {});
         }
     }
 

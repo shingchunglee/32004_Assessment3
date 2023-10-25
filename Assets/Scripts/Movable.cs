@@ -34,7 +34,7 @@ public class Movable : MonoBehaviour
         transform.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, timeFraction);
     }
 
-    public void AddTween()
+    public void AddTween(Action callback)
     {
        if (activeTween == null)
        {
@@ -44,7 +44,7 @@ public class Movable : MonoBehaviour
                 new Vector3(gameObject.transform.position.x + xVelocity, gameObject.transform.position.y + yVelocity, 0.0f),
                 Time.time,
                 1f,
-                () => { finishedTween = true; }
+                () => { finishedTween = true; callback(); }
             );
        }
     }
