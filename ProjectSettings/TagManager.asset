@@ -10,7 +10,9 @@ TagManager:
   - GhostTimer
   - Wall
   - Pellet
-  - Power Pill
+  - BonusScore
+  - Score
+  - PowerPill
   layers:
   - Default
   - TransparentFX

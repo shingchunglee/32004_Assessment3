@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class PacStudentController : MonoBehaviour
@@ -10,15 +13,18 @@ public class PacStudentController : MonoBehaviour
     private AudioPlayable audioPlayableComponent;
     [SerializeField] private ParticleSystem walkParticles;
     private ParticleSystem.EmissionModule walkEmission;
+    [SerializeField] private ScoreController scoreController;
+    [SerializeField] private GhostStateController ghostStateController;
     public GameObject particleEffectPrefab;
     private BoxCollider2D boxCollider;
     private Animator animation;
     [SerializeField] private bool isDead;
-    private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
-    private int currentPath = 0;
+
+    // private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
+    // private int currentPath = 0;
     private Direction? lastInput = null;
     private Direction currentInput;
-    private Vector2 coordinates = new Vector2(27, 15);
+    private Vector2 coordinates = new Vector2(1, 1);
     private Map map = Map.Instance;
 
 	// Use this for initialization
@@ -78,11 +84,23 @@ public class PacStudentController : MonoBehaviour
 
             audioPlayableComponent.PlayWallCollisionSound();
         }
+        if (other.CompareTag("BonusScore"))
+        {
+            scoreController.UpdateScore(100);
+            Destroy(other.gameObject);
+        }
         if (other.CompareTag("Pellet"))
         {
-            // Debug.Log("Hit pellet");
+            scoreController.UpdateScore(10);
+            Destroy(other.gameObject);
         }
-    }
+        if (other.CompareTag("PowerPill"))
+        {
+            Debug.Log("powerpill");
+            ghostStateController.SetScared();
+            Destroy(other.gameObject);
+        }
+    }       
 
     private void UpdateAnimation(Direction direction)
     {
@@ -153,29 +171,7 @@ public class PacStudentController : MonoBehaviour
                         walkEmission.enabled = false;
                     }
                 }
-            // } catch (IndexOutOfRangeException)
-            // {
-            //     Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
-            //     int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
-            //     if (!map.isWall(currentInputTile))
-            //     {
-            //         Walk(currentInput, newCoordinates);
-            //     } else
-            //     {
-            //         animation.speed = 0;
-            //         walkEmission.enabled = false;
-            //     }
-            // }
-            
-            
-            
-            // currentInput = valueOfLastInput;
         }
-        // if ( Map.walkable(coordinates) )
-        // UpdateMove(direction);
-        // UpdateAnimation(direction);
-        // movableComponent.AddTween();
-        // audioPlayableComponent.PlayWalkSound();
     }
 
     private void Walk(Direction valueOfLastInput, Vector2 newCoordinates)
@@ -224,4 +220,6 @@ public class PacStudentController : MonoBehaviour
                 return;
         }
     }
+    
+    
 }
