@@ -8,6 +8,7 @@ public class PacStudentController : MonoBehaviour
     private PacStudentAnimator animationComponent;
     private Movable movableComponent;
     private AudioPlayable audioPlayableComponent;
+    private Animator animation;
     [SerializeField] private bool isDead;
     private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
     private int currentPath = 0;
@@ -19,6 +20,7 @@ public class PacStudentController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        animation = gameObject.GetComponent<Animator>();
         animationComponent = gameObject.GetComponent<PacStudentAnimator>();
         movableComponent = gameObject.GetComponent<Movable>();
         audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
@@ -114,6 +116,7 @@ public class PacStudentController : MonoBehaviour
                 Debug.Log(tile);
                 if (!map.isWall(tile))
                 {
+                    animation.speed = 1;
                     currentInput = valueOfLastInput;
                     UpdateMove(valueOfLastInput);
                     UpdateAnimation(valueOfLastInput);
@@ -127,11 +130,15 @@ public class PacStudentController : MonoBehaviour
                     int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
                     if (!map.isWall(currentInputTile))
                     {
+                        animation.speed = 1;
                         UpdateMove(currentInput);
                         UpdateAnimation(currentInput);
                         coordinates = newCoordinates;
                         movableComponent.AddTween();
                         audioPlayableComponent.PlayWalkSound();
+                    } else
+                    {
+                        animation.speed = 0;
                     }
                 }
             } catch(IndexOutOfRangeException e) {
@@ -139,11 +146,15 @@ public class PacStudentController : MonoBehaviour
                 int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
                 if (!map.isWall(currentInputTile))
                 {
+                    animation.speed = 1;
                     UpdateMove(currentInput);
                     UpdateAnimation(currentInput);
                     coordinates = newCoordinates;
                     movableComponent.AddTween();
                     audioPlayableComponent.PlayWalkSound();
+                } else
+                {
+                    animation.speed = 0;
                 }
             }
             
