@@ -13,6 +13,7 @@ TagManager:
   - BonusScore
   - Score
   - PowerPill
+  - Ghost
   layers:
   - Default
   - TransparentFX

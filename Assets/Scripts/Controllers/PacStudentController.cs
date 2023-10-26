@@ -23,7 +23,7 @@ public class PacStudentController : MonoBehaviour
     // private int[] demoMoves = {3,3,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0};
     // private int currentPath = 0;
     private Direction? lastInput = null;
-    private Direction currentInput;
+    private Direction? currentInput;
     private Vector2 coordinates = new Vector2(1, 1);
     private Map map = Map.Instance;
 
@@ -35,12 +35,9 @@ public class PacStudentController : MonoBehaviour
         movableComponent = gameObject.GetComponent<Movable>();
         audioPlayableComponent = gameObject.GetComponent<AudioPlayable>();
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        gameObject.transform.position = map.GetSceneCoordinates(coordinates);
-
         walkEmission = walkParticles.emission;
-        walkEmission.enabled = false;
 
-        // Walk();
+        Reset();
     }
 
     // Update is called once per frame
@@ -96,11 +93,51 @@ public class PacStudentController : MonoBehaviour
         }
         if (other.CompareTag("PowerPill"))
         {
-            Debug.Log("powerpill");
             ghostStateController.SetScared();
             Destroy(other.gameObject);
         }
-    }       
+        if (other.CompareTag("Ghost"))
+        {
+            GhostController ghostController = other.GetComponent<GhostController>();
+            if (ghostController.state == 0)
+            {
+                Die();
+            }
+            if (ghostController.state == 1 || ghostController.state == 2)
+            {
+                KillGhost(ghostController);
+            }
+        }
+    }
+
+    private void KillGhost(GhostController ghostController)
+    {
+        ghostStateController.Die(ghostController);
+        scoreController.UpdateScore(300);
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        movableComponent.StopMoving();
+        walkEmission.enabled = false;
+        animationComponent.Dead();
+    }
+
+    public void DeadAnimationEnd()
+    {
+        Reset();
+    }
+
+    private void Reset()
+    {
+        isDead = false;
+        lastInput = null;
+        currentInput = null;
+        coordinates = new Vector2(1, 1);
+        gameObject.transform.position = map.GetSceneCoordinates(coordinates);
+        animationComponent.Normal();
+    }
 
     private void UpdateAnimation(Direction direction)
     {
@@ -160,32 +197,34 @@ public class PacStudentController : MonoBehaviour
                 }
                 else 
                 {
-                    newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
-                    int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
-                    if (!map.isWall(currentInputTile))
-                    {
-                        Walk(currentInput, newCoordinates);
-                    } else
-                    {
-                        animation.speed = 0;
-                        walkEmission.enabled = false;
+                    if ( currentInput is Direction valueOfCurrentInput ) {
+                        newCoordinates = map.GetNeighbourCoordinates(coordinates, valueOfCurrentInput);
+                        int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
+                        if (!map.isWall(currentInputTile))
+                        {
+                            Walk(valueOfCurrentInput, newCoordinates);
+                        } else
+                        {
+                            animation.speed = 0;
+                            walkEmission.enabled = false;
+                        }
                     }
                 }
         }
     }
 
-    private void Walk(Direction valueOfLastInput, Vector2 newCoordinates)
+    private void Walk(Direction input, Vector2 newCoordinates)
     {
         animation.speed = 1;
-        currentInput = valueOfLastInput;
-        UpdateBoxCollider(valueOfLastInput);
-        UpdateMove(valueOfLastInput);
-        UpdateAnimation(valueOfLastInput);
-        if (map.isEdge(coordinates) && map.GetNeighbourCoordinates(coordinates, currentInput) == new Vector2(-1,-1)) 
+        currentInput = input;
+        UpdateBoxCollider(input);
+        UpdateMove(input);
+        UpdateAnimation(input);
+        if (map.isEdge(coordinates) && map.GetNeighbourCoordinates(coordinates, input) == new Vector2(-1,-1)) 
         {
             coordinates = map.getOpposite(coordinates);
             gameObject.transform.position = map.GetSceneCoordinates(coordinates);
-            newCoordinates = map.GetNeighbourCoordinates(coordinates, currentInput);
+            newCoordinates = map.GetNeighbourCoordinates(coordinates, input);
         }
 
         walkEmission.enabled = true;

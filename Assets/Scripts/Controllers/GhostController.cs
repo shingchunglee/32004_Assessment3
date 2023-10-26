@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class GhostController : MonoBehaviour
 {
-    private int state = 0;
+    public int state = 0;
 	private GhostAnimatior animationComponent;
     private GameController gameController;
     private Movable movableComponent;
@@ -28,6 +28,7 @@ public class GhostController : MonoBehaviour
 
     public void updateState(int state)
     {
+        this.state = state;
         if (state == 0)
         {
             animationComponent.Normal();

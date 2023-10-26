@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,22 @@ public class GhostStateController : MonoBehaviour
         }
     }
 
+    public void Die(GhostController ghostController)
+    {
+        ghostController.updateState(3);
+        gameSoundController.playGhostDead();
+    
+        StartCoroutine(TransitionToWalkingState(5f, ghostController));
+    }
+    
+    private IEnumerator TransitionToWalkingState(float duration, GhostController ghostController)
+    {
+        yield return new WaitForSeconds(duration);
+    
+        gameSoundController.playGhostNormal();
+        ghostController.updateState(0);
+    }
+
     private IEnumerator StartGhostTimer()
     {
         ghostTimerController.SetActive(true);
@@ -36,7 +53,10 @@ public class GhostStateController : MonoBehaviour
                 // Set the state of ghostControllers to 2
                 foreach (var ghostController in ghostControllers)
                 {
-                    ghostController.updateState(2);
+                    if (ghostController.state == 1) 
+                    {
+                        ghostController.updateState(2);
+                    }
                 }
             }
 
@@ -47,7 +67,10 @@ public class GhostStateController : MonoBehaviour
         gameSoundController.playGhostNormal();
         foreach (var ghostController in ghostControllers)
         {
-            ghostController.updateState(0);
+            if (ghostController.state == 2)
+            {
+                ghostController.updateState(0);
+            }
         }
     }
 }

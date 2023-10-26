@@ -83,4 +83,8 @@ public class Movable : MonoBehaviour
         finishedTween = false;
     }
 
+    internal void StopMoving()
+    {
+        activeTween = null;
+    }
 }
