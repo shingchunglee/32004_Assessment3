@@ -18,6 +18,9 @@ public class CountdownController : MonoBehaviour
             yield return new WaitForSeconds(1f);
             countdownTime--;
         }
+        
+        countdownText.text = "GO!";
+        yield return new WaitForSeconds(1f);
 
         value();
         countdownText.gameObject.SetActive(false);
