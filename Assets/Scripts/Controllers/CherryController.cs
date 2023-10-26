@@ -82,6 +82,11 @@ public class CherryController : MonoBehaviour
 
         while (elapsedTime < duration)
         {
+            if (cherry == null)
+            {
+                yield return null;
+                continue;
+            }
             cherry.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -94,8 +99,11 @@ public class CherryController : MonoBehaviour
     {
         if (other.CompareTag("PacStudent"))
         {
-            // Handle collision with PacStudent
-            // Example: Increase score, play sound, etc.
         }
+    }
+
+    private void addScore()
+    {
+        
     }
 }

@@ -6,49 +6,29 @@ using UnityEngine.UIElements;
 
 public class GhostController : MonoBehaviour
 {
-    private int state = 0;
+    public int state = 0;
 	private GhostAnimatior animationComponent;
     private GameController gameController;
     private Movable movableComponent;
-    private float demoStatusDuration = 3.0f;
-    private int[] demoMoves = {3,2,1,0};
+    // private float demoStatusDuration = 3.0f;
+    // private int[] demoMoves = {3,2,1,0};
     private int currentPath = 0;
     private float lastTime;
 	// Use this for initialization
 	void Start () {
         animationComponent = gameObject.GetComponent<GhostAnimatior>();
         movableComponent = gameObject.GetComponent<Movable>();
-
-        Application.targetFrameRate = 144;
-        int direction = demoMoves[currentPath];
-        UpdateMove(direction);
-        UpdateAnimation(direction);
-        movableComponent.AddTween();
 	}
 
     // Update is called once per frame
     void Update()
     {
-        lastTime += Time.deltaTime;
-        if (movableComponent.finishedTween)
-        {
-            currentPath ++;
-            currentPath = currentPath % demoMoves.Length;
-            movableComponent.resetTween();
-            int direction = demoMoves[currentPath];
-            UpdateMove(direction);
-            UpdateAnimation(direction);
-            if (lastTime > demoStatusDuration) {
-                updateState(state);
-                state = (state + 1) % 4;
-                lastTime = 0f;
-            }
-            movableComponent.AddTween();
-        }
+        
     }
 
-    private void updateState(int state)
+    public void updateState(int state)
     {
+        this.state = state;
         if (state == 0)
         {
             animationComponent.Normal();

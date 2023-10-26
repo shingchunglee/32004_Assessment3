@@ -8,6 +8,12 @@ TagManager:
   - ExitButton
   - Lives
   - GhostTimer
+  - Wall
+  - Pellet
+  - BonusScore
+  - Score
+  - PowerPill
+  - Ghost
   layers:
   - Default
   - TransparentFX

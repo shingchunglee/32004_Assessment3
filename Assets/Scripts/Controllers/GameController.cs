@@ -10,6 +10,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject lifePrefab;
     private Map map = Map.Instance;
 
+    [SerializeField] private Text timerText;
+    [SerializeField] private Text ghostTimerText;
+    public int currentScore = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,4 +67,5 @@ public class GameController : MonoBehaviour
             });
         }
     }
+
 }

@@ -79,16 +79,16 @@ public class Map
         switch (valueOfLastInput)
         {
             case Direction.Up:
-                if (coordinates.y >= (ySize * 2) - 1) throw new IndexOutOfRangeException("Out of bounds");
+                if (coordinates.y >= (ySize * 2) - 1) return new Vector2(-1, -1);
                 return new Vector2(coordinates.x, coordinates.y + 1);
             case Direction.Left:
-                if (coordinates.x <= 0) throw new IndexOutOfRangeException("Out of bounds");
+                if (coordinates.x <= 0) return new Vector2(-1, -1);
                 return new Vector2(coordinates.x - 1, coordinates.y);
             case Direction.Down:
-                if (coordinates.y <= 0) throw new IndexOutOfRangeException("Out of bounds");
+                if (coordinates.y <= 0) return new Vector2(-1, -1);
                 return new Vector2(coordinates.x, coordinates.y - 1);
             case Direction.Right:
-                if (coordinates.x >= (xSize * 2) - 1) throw new IndexOutOfRangeException("Out of bounds");
+                if (coordinates.x >= (xSize * 2) - 1) return new Vector2(-1, -1);
                 return new Vector2(coordinates.x + 1, coordinates.y);
             default: 
                 throw new ArgumentException("Invalid direction");
@@ -97,6 +97,7 @@ public class Map
 
     public int GetTile(Vector2 levelCoordinate)
     {
+        if (levelCoordinate.x == -1 || levelCoordinate.y == -1) return -1;
         return levelMap[(int)levelCoordinate.y, (int)levelCoordinate.x];
     }
 
@@ -130,5 +131,18 @@ public class Map
         if (coordinates.x < xSize && coordinates.y >= ySize) return 3;
         if (coordinates.x < xSize && coordinates.y < ySize) return 4;
         throw new Exception("Incorrect coordinates");
+    }
+
+    public bool isEdge(Vector2 coordinates)
+    {
+        return coordinates.x == 0 || coordinates.x == (2 * xSize) - 1 || coordinates.y == 0 || coordinates.y == (2 * ySize) - 1;
+    }
+
+    public Vector2 getOpposite(Vector2 coordinates)
+    {
+        return new Vector2(
+            coordinates.x == 0 ? (2 * xSize) - 1 : coordinates.x == (2 * xSize) - 1 ? 0 : coordinates.x,
+            coordinates.y == 0 ? (2 * ySize) - 1 : coordinates.y == (2 * ySize) -1 ? 0 : coordinates.y
+        );
     }
 }
