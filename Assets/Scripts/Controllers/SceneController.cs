@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,8 +6,17 @@ using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour
 {
+
     private void Start() {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(this);
+    }
+
+    public void LoadStart()
+    {
+        StartCoroutine(LoadSceneAsync(
+            "StartScene",
+            () => {}
+        ));
     }
 
     public void LoadLevel1()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private CountdownController countdownController;
     [SerializeField] private LifeController lifeController;
     [SerializeField] private LifeIndicatorController lifeIndicatorController;
-    public int currentScore = 0;
+    [SerializeField] private GameOverTextController gameOverTextController;
+    [SerializeField] private GameTimerController gameTimerController;
+    [SerializeField] private ScoreController scoreController;
     public bool isPause = true;
 
     // Start is called before the first frame update
@@ -22,7 +25,30 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (AllPelletsEaten() || lifeController.lives <= 0)
+        {
+            gameOverTextController.setActive();
+            isPause = true;
 
+            int currHighScore = PlayerPrefs.GetInt("HighScore", 0);
+            float currBestTime = PlayerPrefs.GetFloat("BestTime", 0f);
+            
+            PlayerPrefs.SetInt("HighScore", scoreController.currentScore > currHighScore ? scoreController.currentScore : currHighScore);
+            PlayerPrefs.SetFloat("BestTime", (gameTimerController.GetTime() > currBestTime) && scoreController.currentScore == currHighScore ? gameTimerController.GetTime() : currBestTime);
+            PlayerPrefs.Save();
+            
+            Invoke("ReturnToStartScene", 3f);
+        }
+    }
+
+    private void ReturnToStartScene()
+    {
+        GameObject.FindWithTag("Managers")?.GetComponent<SceneController>().LoadStart();
+    }
+
+    private bool AllPelletsEaten()
+    {
+        return GameObject.FindWithTag("Pellet") == null;
     }
 
     private void DisableGhostTimer()

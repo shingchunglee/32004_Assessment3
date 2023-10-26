@@ -1049,6 +1049,7 @@ RectTransform:
   - {fileID: 1925761733}
   - {fileID: 1025686243}
   - {fileID: 1920459027}
+  - {fileID: 1435204152}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6483,6 +6484,7 @@ GameObject:
   - component: {fileID: 1257106416}
   - component: {fileID: 1257106415}
   - component: {fileID: 1257106417}
+  - component: {fileID: 1257106418}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -6520,7 +6522,9 @@ MonoBehaviour:
   countdownController: {fileID: 1257106414}
   lifeController: {fileID: 1257106416}
   lifeIndicatorController: {fileID: 1257106415}
-  currentScore: 0
+  gameOverTextController: {fileID: 1257106418}
+  gameTimerController: {fileID: 1257106417}
+  scoreController: {fileID: 1257106410}
   isPause: 1
 --- !u!114 &1257106409
 MonoBehaviour:
@@ -6548,6 +6552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 2056836985}
+  currentScore: 0
 --- !u!114 &1257106411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6652,6 +6657,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTimerText: {fileID: 593458531}
   gameController: {fileID: 1257106408}
+--- !u!114 &1257106418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257106405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860ab0bef82de487ba4527a4b2a3b199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownText: {fileID: 1435204153}
 --- !u!1 &1264493542
 GameObject:
   m_ObjectHideFlags: 0
@@ -6964,6 +6982,86 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8125, y: 0.875}
   m_EdgeRadius: 0
+--- !u!1 &1435204151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1435204152}
+  - component: {fileID: 1435204154}
+  - component: {fileID: 1435204153}
+  m_Layer: 5
+  m_Name: GameOver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1435204152
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435204151}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 825145972}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1435204153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435204151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 120
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 200
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Game Over
+--- !u!222 &1435204154
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435204151}
+  m_CullTransparentMesh: 1
 --- !u!4 &1450213238 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5357474637647482639, guid: 49d9ae634823e4dd48ad7294262ead15, type: 3}

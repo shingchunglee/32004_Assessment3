@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,5 +27,10 @@ public class GameTimerController : MonoBehaviour
 
             gameTimerText.text = formattedTime;
         }
+    }
+
+    public float GetTime()
+    {
+        return timer;
     }
 }
