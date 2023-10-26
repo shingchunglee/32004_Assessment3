@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class PacStudentController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private GameController gameController;
     private PacStudentAnimator animationComponent;
     private Movable movableComponent;
     private AudioPlayable audioPlayableComponent;
@@ -15,6 +15,8 @@ public class PacStudentController : MonoBehaviour
     private ParticleSystem.EmissionModule walkEmission;
     [SerializeField] private ScoreController scoreController;
     [SerializeField] private GhostStateController ghostStateController;
+    [SerializeField] private LifeController lifeController;
+    [SerializeField] private LifeIndicatorController lifeIndicatorController;
     public GameObject particleEffectPrefab;
     private BoxCollider2D boxCollider;
     private Animator animation;
@@ -43,7 +45,7 @@ public class PacStudentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead) {
+        if (!isDead && !gameController.isPause) {
             if (Input.GetKeyDown(KeyCode.W) && lastInput != Direction.Up)
             {
                 lastInput = Direction.Up;
@@ -122,6 +124,8 @@ public class PacStudentController : MonoBehaviour
         movableComponent.StopMoving();
         walkEmission.enabled = false;
         animationComponent.Dead();
+        lifeController.LoseLife();
+        lifeIndicatorController.UpdateLifeObjects(lifeController.lives);
     }
 
     public void DeadAnimationEnd()
@@ -135,6 +139,7 @@ public class PacStudentController : MonoBehaviour
         lastInput = null;
         currentInput = null;
         coordinates = new Vector2(1, 1);
+        walkEmission.enabled = false;
         gameObject.transform.position = map.GetSceneCoordinates(coordinates);
         animationComponent.Normal();
     }

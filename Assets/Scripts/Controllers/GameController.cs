@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,45 +6,49 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    private const int initLives = 3;
-    public int lives = 3;
-    [SerializeField] private GameObject lifePrefab;
     private Map map = Map.Instance;
-
-    [SerializeField] private Text timerText;
-    [SerializeField] private Text ghostTimerText;
-    public int currentScore = 0;
+    [SerializeField] private CountdownController countdownController;
+    [SerializeField] private LifeController lifeController;
+    [SerializeField] private LifeIndicatorController lifeIndicatorController;
+    [SerializeField] private GameOverTextController gameOverTextController;
+    [SerializeField] private GameTimerController gameTimerController;
+    [SerializeField] private ScoreController scoreController;
+    public bool isPause = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        CreateLifeObjects();
         DisableGhostTimer();
+        Init();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (AllPelletsEaten() || lifeController.lives <= 0)
+        {
+            gameOverTextController.setActive();
+            isPause = true;
 
+            int currHighScore = PlayerPrefs.GetInt("HighScore", 0);
+            float currBestTime = PlayerPrefs.GetFloat("BestTime", 0f);
+            
+            PlayerPrefs.SetInt("HighScore", scoreController.currentScore > currHighScore ? scoreController.currentScore : currHighScore);
+            PlayerPrefs.SetFloat("BestTime", (gameTimerController.GetTime() > currBestTime) && scoreController.currentScore == currHighScore ? gameTimerController.GetTime() : currBestTime);
+            PlayerPrefs.Save();
+            
+            Invoke("ReturnToStartScene", 3f);
+        }
     }
 
-    private void CreateLifeObjects()
+    private void ReturnToStartScene()
     {
-         
-        // GameObject lifePrefab = GameObject.FindGameObjectWithTag("Life");
-        if (lifePrefab != null)
-        {
-            RectTransform rectTransform = lifePrefab.GetComponent<RectTransform>();
-            float width = rectTransform.sizeDelta.x;
-            Transform parent = GameObject.FindGameObjectWithTag("Lives").transform;
+        GameObject.FindWithTag("Managers")?.GetComponent<SceneController>().LoadStart();
+    }
 
-            for (int i = 0; i < initLives; i++)
-            {
-                GameObject newLife = Instantiate(lifePrefab, parent);
-                RectTransform newRectTransform = newLife.GetComponent<RectTransform>();
-                newRectTransform.anchoredPosition = new Vector2(i * width, 0);
-            }
-        }
+    private bool AllPelletsEaten()
+    {
+        return GameObject.FindWithTag("Pellet") == null;
     }
 
     private void DisableGhostTimer()
@@ -66,6 +71,13 @@ public class GameController : MonoBehaviour
                 call();
             });
         }
+
+        StartCoroutine(countdownController.StartCountdown(() => {isPause = false;}));
     }
 
+    public void Init()
+    {
+        lifeIndicatorController.UpdateLifeObjects(lifeController.lives);
+        StartCoroutine(countdownController.StartCountdown(() => {isPause = false;}));
+    }
 }

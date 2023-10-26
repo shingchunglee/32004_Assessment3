@@ -14,6 +14,7 @@ TagManager:
   - Score
   - PowerPill
   - Ghost
+  - Managers
   layers:
   - Default
   - TransparentFX
