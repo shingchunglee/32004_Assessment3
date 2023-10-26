@@ -139,6 +139,7 @@ public class PacStudentController : MonoBehaviour
         lastInput = null;
         currentInput = null;
         coordinates = new Vector2(1, 1);
+        walkEmission.enabled = false;
         gameObject.transform.position = map.GetSceneCoordinates(coordinates);
         animationComponent.Normal();
     }
