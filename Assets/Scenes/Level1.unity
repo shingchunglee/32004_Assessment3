@@ -1048,6 +1048,7 @@ RectTransform:
   - {fileID: 436133576}
   - {fileID: 1925761733}
   - {fileID: 1025686243}
+  - {fileID: 1920459027}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6478,6 +6479,9 @@ GameObject:
   - component: {fileID: 1257106411}
   - component: {fileID: 1257106412}
   - component: {fileID: 1257106413}
+  - component: {fileID: 1257106414}
+  - component: {fileID: 1257106416}
+  - component: {fileID: 1257106415}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -6512,11 +6516,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d542c80574248cf834ebb001339d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 3
-  lifePrefab: {fileID: 2061197795408459374, guid: 72b32d8a38ca24fbdbcfa16b0d63f4a5, type: 3}
-  timerText: {fileID: 0}
-  ghostTimerText: {fileID: 0}
+  countdownController: {fileID: 1257106414}
+  lifeController: {fileID: 1257106416}
+  lifeIndicatorController: {fileID: 1257106415}
   currentScore: 0
+  isPause: 1
 --- !u!114 &1257106409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6591,6 +6595,48 @@ MonoBehaviour:
   introClip: {fileID: 8300000, guid: f4ace022aa276484da0d767ce09ef8b7, type: 3}
   ghostNormalClip: {fileID: 8300000, guid: 23f7290090cd74b48bde03fb1f1e0520, type: 3}
   ghostScaredClip: {fileID: 8300000, guid: 991961e1e57f54e67a14b2b5f77c0e86, type: 3}
+  ghostDeadClip: {fileID: 8300000, guid: 212dc84c9c8204ce881ec59fcc86bfb9, type: 3}
+--- !u!114 &1257106414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257106405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7454a70a131cd4a3284c3c7274265bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownText: {fileID: 1920459028}
+  gameSoundController: {fileID: 1257106413}
+--- !u!114 &1257106415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257106405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e1bbc0fce9e44979be0bc153c9ca46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LifeTracker: {fileID: 1925761732}
+  lifePrefab: {fileID: 2061197795408459374, guid: 72b32d8a38ca24fbdbcfa16b0d63f4a5, type: 3}
+--- !u!114 &1257106416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257106405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d6c15d2a9cb49068b80d2751e83f7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lives: 3
 --- !u!1 &1264493542
 GameObject:
   m_ObjectHideFlags: 0
@@ -7232,6 +7278,86 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1920459026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1920459027}
+  - component: {fileID: 1920459029}
+  - component: {fileID: 1920459028}
+  m_Layer: 5
+  m_Name: Countdown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1920459027
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920459026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 825145972}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1920459028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920459026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 200
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 200
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 3
+--- !u!222 &1920459029
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920459026}
+  m_CullTransparentMesh: 1
 --- !u!1 &1925761732
 GameObject:
   m_ObjectHideFlags: 0
@@ -7521,6 +7647,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1147371984}
     - target: {fileID: 1063446927853899912, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 1257106408}
+    - target: {fileID: 1063446927853899912, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
+      propertyPath: lifeController
+      value: 
+      objectReference: {fileID: 1257106416}
+    - target: {fileID: 1063446927853899912, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
       propertyPath: scoreController
       value: 
       objectReference: {fileID: 1257106410}
@@ -7532,6 +7666,10 @@ PrefabInstance:
       propertyPath: particleEffectPrefab
       value: 
       objectReference: {fileID: 3239690435836139210, guid: cf2a14792c27941459c133f387fb9cd0, type: 3}
+    - target: {fileID: 1063446927853899912, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
+      propertyPath: lifeIndicatorController
+      value: 
+      objectReference: {fileID: 1257106415}
     - target: {fileID: 1236681103941217977, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
       propertyPath: m_Name
       value: PacStudent
@@ -7693,7 +7831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5357474637647482639, guid: 49d9ae634823e4dd48ad7294262ead15, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.5
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 5357474637647482639, guid: 49d9ae634823e4dd48ad7294262ead15, type: 3}
       propertyPath: m_LocalPosition.y

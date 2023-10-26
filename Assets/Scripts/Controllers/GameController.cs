@@ -5,45 +5,24 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    private const int initLives = 3;
-    public int lives = 3;
-    [SerializeField] private GameObject lifePrefab;
     private Map map = Map.Instance;
-
-    [SerializeField] private Text timerText;
-    [SerializeField] private Text ghostTimerText;
+    [SerializeField] private CountdownController countdownController;
+    [SerializeField] private LifeController lifeController;
+    [SerializeField] private LifeIndicatorController lifeIndicatorController;
     public int currentScore = 0;
+    public bool isPause = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        CreateLifeObjects();
         DisableGhostTimer();
+        Init();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-    }
-
-    private void CreateLifeObjects()
-    {
-         
-        // GameObject lifePrefab = GameObject.FindGameObjectWithTag("Life");
-        if (lifePrefab != null)
-        {
-            RectTransform rectTransform = lifePrefab.GetComponent<RectTransform>();
-            float width = rectTransform.sizeDelta.x;
-            Transform parent = GameObject.FindGameObjectWithTag("Lives").transform;
-
-            for (int i = 0; i < initLives; i++)
-            {
-                GameObject newLife = Instantiate(lifePrefab, parent);
-                RectTransform newRectTransform = newLife.GetComponent<RectTransform>();
-                newRectTransform.anchoredPosition = new Vector2(i * width, 0);
-            }
-        }
     }
 
     private void DisableGhostTimer()
@@ -66,6 +45,13 @@ public class GameController : MonoBehaviour
                 call();
             });
         }
+
+        StartCoroutine(countdownController.StartCountdown(() => {isPause = false;}));
     }
 
+    public void Init()
+    {
+        lifeIndicatorController.UpdateLifeObjects(lifeController.lives);
+        StartCoroutine(countdownController.StartCountdown(() => {isPause = false;}));
+    }
 }

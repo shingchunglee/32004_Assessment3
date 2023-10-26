@@ -31,6 +31,7 @@ public class GameSoundController : MonoBehaviour
     public void playGhostNormal()
     {
         audioSource.clip = ghostNormalClip;
+        audioSource.loop = true;
         audioSource.Play();
     }
 
