@@ -145,4 +145,9 @@ public class Map
             coordinates.y == 0 ? (2 * ySize) - 1 : coordinates.y == (2 * ySize) -1 ? 0 : coordinates.y
         );
     }
+
+    public Vector2 getTopLeftCoordinate()
+    {
+        return new Vector2(1, (2 * ySize) - 2);
+    }
 }

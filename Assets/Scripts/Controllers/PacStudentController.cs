@@ -138,7 +138,7 @@ public class PacStudentController : MonoBehaviour
         isDead = false;
         lastInput = null;
         currentInput = null;
-        coordinates = new Vector2(1, 1);
+        coordinates = map.getTopLeftCoordinate();
         walkEmission.enabled = false;
         gameObject.transform.position = map.GetSceneCoordinates(coordinates);
         animationComponent.Normal();
