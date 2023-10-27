@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GhostAnimatior : MonoBehaviour
 {
     public Animator animatorController;
-    [SerializeField] private int ghostColor;
 
     // Start is called before the first frame update
     void Start()
     {
+        int ghostColor = (int)gameObject.GetComponent<GhostController>()?.ghostType;
         animatorController.SetInteger("GhostColor", ghostColor);
     }
 

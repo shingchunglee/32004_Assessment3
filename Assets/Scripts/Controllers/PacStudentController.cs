@@ -13,6 +13,7 @@ public class PacStudentController : MonoBehaviour
     private AudioPlayable audioPlayableComponent;
     [SerializeField] private ParticleSystem walkParticles;
     private ParticleSystem.EmissionModule walkEmission;
+    [SerializeField] private CoordinatesController coordinatesController;
     [SerializeField] private ScoreController scoreController;
     [SerializeField] private GhostStateController ghostStateController;
     [SerializeField] private LifeController lifeController;
@@ -26,7 +27,7 @@ public class PacStudentController : MonoBehaviour
     // private int currentPath = 0;
     private Direction? lastInput = null;
     private Direction? currentInput;
-    private Vector2 coordinates = new Vector2(1, 1);
+    // private Vector2 coordinates = new Vector2(1, 1);
     private Map map = Map.Instance;
 
 	// Use this for initialization
@@ -138,9 +139,9 @@ public class PacStudentController : MonoBehaviour
         isDead = false;
         lastInput = null;
         currentInput = null;
-        coordinates = map.getTopLeftCoordinate();
+        coordinatesController.coordinates = map.GetTopLeftCoordinate();
         walkEmission.enabled = false;
-        gameObject.transform.position = map.GetSceneCoordinates(coordinates);
+        gameObject.transform.position = map.GetSceneCoordinates(coordinatesController.coordinates);
         animationComponent.Normal();
     }
 
@@ -194,7 +195,7 @@ public class PacStudentController : MonoBehaviour
         {
             // try
             // {
-                Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinates, valueOfLastInput);
+                Vector2 newCoordinates = map.GetNeighbourCoordinates(coordinatesController.coordinates, valueOfLastInput);
                 int tile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
                 if (!map.isWall(tile))
                 {
@@ -203,7 +204,7 @@ public class PacStudentController : MonoBehaviour
                 else 
                 {
                     if ( currentInput is Direction valueOfCurrentInput ) {
-                        newCoordinates = map.GetNeighbourCoordinates(coordinates, valueOfCurrentInput);
+                        newCoordinates = map.GetNeighbourCoordinates(coordinatesController.coordinates, valueOfCurrentInput);
                         int currentInputTile = map.GetTile(map.GetLevelCoordinates(newCoordinates));
                         if (!map.isWall(currentInputTile))
                         {
@@ -225,15 +226,15 @@ public class PacStudentController : MonoBehaviour
         UpdateBoxCollider(input);
         UpdateMove(input);
         UpdateAnimation(input);
-        if (map.isEdge(coordinates) && map.GetNeighbourCoordinates(coordinates, input) == new Vector2(-1,-1)) 
+        if (map.isEdge(coordinatesController.coordinates) && map.GetNeighbourCoordinates(coordinatesController.coordinates, input) == new Vector2(-1,-1)) 
         {
-            coordinates = map.getOpposite(coordinates);
-            gameObject.transform.position = map.GetSceneCoordinates(coordinates);
-            newCoordinates = map.GetNeighbourCoordinates(coordinates, input);
+            coordinatesController.coordinates = map.getOpposite(coordinatesController.coordinates);
+            gameObject.transform.position = map.GetSceneCoordinates(coordinatesController.coordinates);
+            newCoordinates = map.GetNeighbourCoordinates(coordinatesController.coordinates, input);
         }
 
         walkEmission.enabled = true;
-        movableComponent.AddTween(() => {coordinates = newCoordinates;});
+        movableComponent.AddTween(() => {coordinatesController.coordinates = newCoordinates;});
         audioPlayableComponent.PlayWalkSound();
     }
 

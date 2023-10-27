@@ -46,29 +46,47 @@ public class Map
         {2,2,2,2,2,1,5,3,3,0,4,0,0,0}, 
         {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, 
     };
-    // Dunno what to name them, see CAST quadrants  ^original is S
-    private int[,] levelMapT;
-    private int[,] levelMapA;
-    private int[,] levelMapC;
+    private int[,] walkableSides = { 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,1,1,1,1,1,1,1,1,1,1,1,1,0}, 
+        {0,1,0,0,0,0,0,0,0,0,0,0,1,0}, 
+        {0,1,0,0,0,0,0,0,0,0,0,0,1,0}, 
+        {0,1,0,0,0,0,0,0,0,0,0,0,1,0}, 
+        {0,1,0,0,0,0,0,0,0,0,0,0,1,1}, 
+        {0,1,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,1,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,1,1,1,1,1,1,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,1,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,1,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,1,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,1,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,1,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,1,0,0,0,0,0,0,0}, 
+    };
+
+    private int [,] ghostSpawn = { 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,2}, 
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,1}, 
+        {0,0,0,0,0,0,0,0,0,0,0,1,1,1}, 
+        {0,0,0,0,0,0,0,0,0,0,0,1,1,1}, 
+    };
 
     private int ySize => levelMap.GetLength(0);
     private int xSize => levelMap.GetLength(1);
 
     private void init()
     {
-        levelMapT = new int[ySize, xSize];
-        levelMapA = new int[ySize, xSize];
-        levelMapC = new int[ySize, xSize];
-        for (int i= 0; i<ySize; i++)
-        {
-            for (int j = 0; j<xSize; j++)
-            {
-                levelMapT[ySize-1-i, j] = levelMap[i,j];
-                levelMapA[i, xSize-1-j] = levelMap[i,j];
-                levelMapC[ySize-1-i, xSize-1-j] = levelMap[i,j];
-            }
-        }
-        Debug.Log(levelMapT);
     }
 
 
@@ -119,6 +137,24 @@ public class Map
         }
     }
 
+    public (Vector2, int) GetLevelCoordinatesWithQuadrant(Vector2 coordinates)
+    {
+        int Quadrant = GetQuadrant(coordinates);
+        switch (Quadrant)
+        {
+            case 1:
+                return (new Vector2(Math.Abs(coordinates.x - xSize - (xSize - 1)), coordinates.y), Quadrant);
+            case 2:
+                return (new Vector2(Math.Abs(coordinates.x - xSize - (xSize - 1)), Math.Abs(coordinates.y - ySize - (ySize - 1))), Quadrant);
+            case 3:
+                return(new Vector2(coordinates.x, Math.Abs(coordinates.y - ySize - (ySize - 1))), Quadrant);
+            case 4:
+                return (new Vector2(coordinates.x, coordinates.y), Quadrant);
+            default:
+                throw new Exception("Incorrect coordinates");
+        }
+    }
+
     public Vector3 GetSceneCoordinates(Vector2 coordinates)
     {
         return new Vector3(coordinates.x - xSize + 0.5f, coordinates.y - ySize + 0.5f);
@@ -138,6 +174,7 @@ public class Map
         return coordinates.x == 0 || coordinates.x == (2 * xSize) - 1 || coordinates.y == 0 || coordinates.y == (2 * ySize) - 1;
     }
 
+
     public Vector2 getOpposite(Vector2 coordinates)
     {
         return new Vector2(
@@ -146,8 +183,102 @@ public class Map
         );
     }
 
-    public Vector2 getTopLeftCoordinate()
+    public Vector2 GetTopLeftCoordinate()
     {
         return new Vector2(1, (2 * ySize) - 2);
+    }
+
+    internal Vector2 GetGhostSpawnCoordinates()
+    {
+        return new Vector2(xSize, ySize);
+    }
+
+    internal bool IsSide(Vector2 coordinates)
+    {
+        Vector2 levelCoordinates = GetLevelCoordinates(coordinates);
+        return walkableSides[(int)levelCoordinates.y, (int)levelCoordinates.x] == 1;
+    }
+
+    internal bool IsGhostSpawn(Vector2 coordinates)
+    {
+        Vector2 levelCoordinates = GetLevelCoordinates(coordinates);
+        return ghostSpawn[(int)levelCoordinates.y, (int)levelCoordinates.x] == 1;
+    }
+
+    internal bool IsGhostSpawnGoal(Vector2 coordinates)
+    {
+        Vector2 levelCoordinates = GetLevelCoordinates(coordinates);
+        return ghostSpawn[(int)levelCoordinates.y, (int)levelCoordinates.x] == 2;
+    }
+
+    internal Vector2 GetClosestGhostSpawnGoal(Vector2 coordinates)
+    {
+        (Vector2 levelCoordinates, int Quadrant) = GetLevelCoordinatesWithQuadrant(coordinates);
+        float minDist = Mathf.Infinity;
+        Vector2 closestWall = Vector2.zero;
+        
+        for (int i= 0; i<ySize; i++)
+        {
+            for (int j = 0; j<xSize; j++)
+            {
+                if (IsGhostSpawnGoal(new Vector2(j, i)))
+                {
+                    float dist = Vector2.Distance(levelCoordinates, new Vector2(j, i));
+                    if (dist <= minDist)
+                    {
+                        closestWall = new Vector2(j, i);
+                        minDist = dist;
+                    }
+                }
+            }
+        }
+
+        Vector2 gameCoordinates = GetGameCoordinates(closestWall, Quadrant);
+
+        return gameCoordinates;
+    }
+
+    internal Vector2 GetClosestWall(Vector2 coordinates)
+    {
+        (Vector2 levelCoordinates, int Quadrant) = GetLevelCoordinatesWithQuadrant(coordinates);
+        float minDist = Mathf.Infinity;
+        Vector2 closestWall = Vector2.zero;
+        
+        for (int i= 0; i<ySize; i++)
+        {
+            for (int j = 0; j<xSize; j++)
+            {
+                if (IsSide(new Vector2(j, i)))
+                {
+                    float dist = Vector2.Distance(levelCoordinates, new Vector2(j, i));
+                    if (dist <= minDist)
+                    {
+                        closestWall = new Vector2(j, i);
+                        minDist = dist;
+                    }
+                }
+            }
+        }
+
+        Vector2 gameCoordinates = GetGameCoordinates(closestWall, Quadrant);
+
+        return gameCoordinates;
+    }
+
+    private Vector2 GetGameCoordinates(Vector2 coordinates, int quadrant)
+    {
+        switch (quadrant)
+        {
+            case 1:
+                return new Vector2(Math.Abs(coordinates.x - (xSize - 1)) + xSize, coordinates.y);
+            case 2:
+                return new Vector2(Math.Abs(coordinates.x - (xSize - 1)) + xSize, Math.Abs(coordinates.y - (ySize - 1)) + ySize);
+            case 3:
+                return new Vector2(coordinates.x, Math.Abs(coordinates.y - (ySize - 1)) + ySize);
+            case 4:
+                return new Vector2(coordinates.x, coordinates.y);
+            default:
+                throw new Exception("Incorrect coordinates");
+        }
     }
 }
