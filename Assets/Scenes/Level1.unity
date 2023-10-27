@@ -7724,6 +7724,14 @@ PrefabInstance:
       propertyPath: lifeIndicatorController
       value: 
       objectReference: {fileID: 1257106415}
+    - target: {fileID: 1063446927853899912, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
+      propertyPath: wallParticleEffectPrefab
+      value: 
+      objectReference: {fileID: 3239690435836139210, guid: cf2a14792c27941459c133f387fb9cd0, type: 3}
+    - target: {fileID: 1063446927853899912, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
+      propertyPath: deathParticleEffectPrefab
+      value: 
+      objectReference: {fileID: 3202349821609410607, guid: cffdbb776460d4e6c97544899f0a954a, type: 3}
     - target: {fileID: 1236681103941217977, guid: 06ed03bf20ec1445eab1b34ea6700ca2, type: 3}
       propertyPath: m_Name
       value: PacStudent

@@ -18,7 +18,8 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private GhostStateController ghostStateController;
     [SerializeField] private LifeController lifeController;
     [SerializeField] private LifeIndicatorController lifeIndicatorController;
-    public GameObject particleEffectPrefab;
+    public GameObject wallParticleEffectPrefab;
+    public GameObject deathParticleEffectPrefab;
     private BoxCollider2D boxCollider;
     private Animator animation;
     [SerializeField] private bool isDead;
@@ -80,7 +81,7 @@ public class PacStudentController : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             Vector2 collisionPoint = transform.position;
-            Instantiate(particleEffectPrefab, collisionPoint, Quaternion.identity);
+            Instantiate(wallParticleEffectPrefab, collisionPoint, Quaternion.identity);
 
             audioPlayableComponent.PlayWallCollisionSound();
         }
@@ -127,6 +128,9 @@ public class PacStudentController : MonoBehaviour
         animationComponent.Dead();
         lifeController.LoseLife();
         lifeIndicatorController.UpdateLifeObjects(lifeController.lives);
+
+        Vector3 particleEffectPosition = transform.position;
+        Instantiate(deathParticleEffectPrefab, particleEffectPosition, Quaternion.identity);
     }
 
     public void DeadAnimationEnd()
