@@ -5,6 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - ManualMap
+  - ExitButton
+  - Lives
+  - GhostTimer
+  - Wall
+  - Pellet
+  - BonusScore
+  - Score
+  - PowerPill
+  - Ghost
+  - Managers
   layers:
   - Default
   - TransparentFX
